@@ -197,7 +197,14 @@ MathVec<T, dim> operator+(const MathVec<T, dim>& v1, const MathVec<T, dim>& v2) 
 	return sum;
 }
 
-
+template<class T, unsigned int dim>
+MathVec<T, dim> operator+(const MathVec<T, dim>& v1, T& other) {
+	MathVec<T, dim> sum(v1.get(0));
+	for (unsigned int i = 0; i < dim; i++) {
+		sum.set(i, v1.get(i) + other);
+	}
+	return sum;
+}
 
 
 template<class T, unsigned int dim>

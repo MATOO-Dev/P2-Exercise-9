@@ -1,7 +1,10 @@
 #include <iostream>
 #include <string>
+#include <cmath>
+#include <thread>
 #include "include/MathVec.h"
 #include "include/MathMatrix.h"
+#include "include/ViewPortGL.h"
 
 int main()
 {
@@ -99,4 +102,71 @@ int main()
     std::cout << to_string(aMatrix * bMatrix);
 
     //bonus
+    //its like 00:08 am right now, im not gonna clean this up in the middle of the night
+    //it works tho, so spinny thing goes weeeeeee
+    ViewPortGL targetWindow = ViewPortGL("Spin to win", 1000, 1000);
+    float rotationAngle = 0;
+    //measured in radians, not degrees
+    //this is ~6 degrees, or 1 rotation in 60 steps for 60fps
+    float angleStep = 0.1047198;
+
+    MathMatrix<float, 2, 2> rotationMatrix = MathMatrix<float, 2, 2>(0);
+
+    MathVec<float, 2> topLeft = MathVec<float, 2>(0);
+    topLeft.set(0, -250);
+    topLeft.set(1, -250);
+    MathVec<float, 2> topRight = MathVec<float, 2>(0);
+    topRight.set(0, 250);
+    topRight.set(1, -250);
+    MathVec<float, 2> bottomLeft = MathVec<float, 2>(0);
+    bottomLeft.set(0, -250);
+    bottomLeft.set(1, 250);
+    MathVec<float, 2> bottomRight = MathVec<float, 2>(0);
+    bottomRight.set(0, 250);
+    bottomRight.set(1, 250);
+    MathVec<float, 2> topLeftRotated = MathVec<float, 2>(0);
+    MathVec<float, 2> topRightRotated = MathVec<float, 2>(0);
+    MathVec<float, 2> bottomLeftRotated = MathVec<float, 2>(0);
+    MathVec<float, 2> bottomRightRotated = MathVec<float, 2>(0);
+
+    while(!targetWindow.windowShouldClose())
+    {
+        targetWindow.clearViewPort();
+        if(rotationAngle >= 360)
+            rotationAngle -= 360;
+
+        rotationMatrix = MathMatrix<float, 2, 2>(0);
+        rotationMatrix.set(0, 0, cos(rotationAngle));
+        rotationMatrix.set(1, 0, -sin(rotationAngle));
+        rotationMatrix.set(0, 1, sin(rotationAngle));
+        rotationMatrix.set(1, 1, cos(rotationAngle));
+
+        topLeftRotated = (rotationMatrix * topLeft);
+        topRightRotated = rotationMatrix * topRight;
+        bottomLeftRotated = rotationMatrix * bottomLeft;
+        bottomRightRotated = rotationMatrix * bottomRight;
+        
+        //targetWindow.prepareBlock(topLeftRotated.get(0), topLeftRotated.get(1), 500, 500, 50, 75, 100);
+        targetWindow.prepareTriangle(   topLeftRotated.get(0)+500,
+                                        topLeftRotated.get(1)+500,
+                                        topRightRotated.get(0)+500,
+                                        topRightRotated.get(1)+500,
+                                        bottomLeftRotated.get(0)+500,
+                                        bottomLeftRotated.get(1)+500,
+                                        50, 75, 100);
+        targetWindow.prepareTriangle(   topRightRotated.get(0)+500,
+                                        topRightRotated.get(1)+500,
+                                        bottomLeftRotated.get(0)+500,
+                                        bottomLeftRotated.get(1)+500,
+                                        bottomRightRotated.get(0)+500,
+                                        bottomRightRotated.get(1)+500,
+                                        50, 75, 100);
+
+        targetWindow.sendTriangles();
+        targetWindow.swapBuffers();
+
+        this_thread::sleep_for(0.016s);
+
+        rotationAngle += angleStep;
+    }
 }
