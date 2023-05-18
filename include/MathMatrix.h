@@ -4,11 +4,11 @@
 #include <string>
 #include "MathVec.h"
 
-//row is x axis
-//column is y axis
-//note: i originally read this as "make a matrix with width rowDim and height colDim"
-//now i think its actualyl supposed to be "make a matrix with rowDim rows and colDim columns"
-//i havent changed this yet, so it might behave unexpected
+//rowDim is x axis size
+//colDim is y axis size
+//e.g. a matrix with width 3 and height 2 would be <3,2>
+//you could also interpret this the other way around, with it being the amount of axes, not their size
+//in that case, flip rowDim/colDim and some get/set operations in code
 template<class T, unsigned int rowDim, unsigned int colDim>
 class MathMatrix
 {
