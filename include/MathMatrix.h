@@ -6,6 +6,9 @@
 
 //row is x axis
 //column is y axis
+//note: i originally read this as "make a matrix with width rowDim and height colDim"
+//now i think its actualyl supposed to be "make a matrix with rowDim rows and colDim columns"
+//i havent changed this yet, so it might behave unexpected
 template<class T, unsigned int rowDim, unsigned int colDim>
 class MathMatrix
 {
@@ -24,6 +27,7 @@ public:
     MathVec<T, rowDim> getRow(int index) const;
 	MathMatrix<T, rowDim, colDim>& operator=(const MathMatrix<T, rowDim, colDim>& source);
 	MathMatrix<T, rowDim, colDim>& operator=(MathMatrix<T, rowDim, colDim>&& source);
+    void fillLinear();
 };
 
 template<class T, unsigned int rowDim, unsigned int colDim>
@@ -225,17 +229,85 @@ inline MathMatrix<T, rowDim, colDim>& MathMatrix<T, rowDim, colDim>::operator=(M
     return *this;
 }
 
+template<class T, unsigned int rowDim, unsigned int colDim>
+inline MathMatrix<T, rowDim, colDim> operator+(const MathMatrix<T, rowDim, colDim>& a, const MathMatrix<T, rowDim, colDim>& b)
+{
+    //new object
+    MathMatrix<T, rowDim, colDim> sumMatrix = MathMatrix<T, rowDim, colDim>(0);
 
+    //fill with sum of both matrices
+    for(int y = 0; y < colDim; y++)
+        for(int x = 0; x < rowDim; x++)
+        {
+            T operationResult = a.get(x,y) + b.get(x, y);
+            sumMatrix.set(x, y, operationResult);
+        }
 
+    //return object
+    return sumMatrix;
+}
 
+template<class T, unsigned int rowDim, unsigned int colDim>
+inline MathMatrix<T, rowDim, colDim> operator*(const MathMatrix<T, rowDim, colDim>& a, const T& b)
+{
+    //new object
+    MathMatrix<T, rowDim, colDim> multMatrix = MathMatrix<T, rowDim, colDim>(0);
 
+    //fill with sum of both matrices
+    for(int y = 0; y < colDim; y++)
+        for(int x = 0; x < rowDim; x++)
+        {
+            T operationResult = a.get(x,y) * b;
+            multMatrix.set(x, y, operationResult);
+        }
 
+    //return object
+    return multMatrix;
+}
 
+//still wip
+template<class T, unsigned int rowDim, unsigned int colDim>
+MathVec<T, colDim> operator*(const MathMatrix<T, rowDim, colDim>& a, const MathVec<T, rowDim>& b)
+{
+    //new object
+    MathVec<T, colDim> multVec = MathVec<T, colDim>(0);
 
+    //fill with sum of both matrices
+    for(int m = 0; m < colDim; m++)
+    {
+        T ci = 0;
+        for(int n = 0; n < rowDim; n++)
+            ci += a.get(n, m) * b.get(n);
+        multVec.set(m, ci);
+    }
 
+    //return object
+    return multVec;
+}
 
-//template<class T, unsigned int rowDim, unsigned int colDim>
-//inline void MathMatrix<T, rowDim, colDim>::
-//{
-//    
-//}
+//placeholder
+template<class T, unsigned int rowDim, unsigned int colDim>
+inline MathMatrix<T, rowDim, colDim> operator*(const MathMatrix<T, rowDim, colDim>& a, const MathMatrix<T, rowDim, colDim>& b)
+{
+    //new object
+    MathMatrix<T, rowDim, colDim> multMatrix = MathMatrix<T, rowDim, colDim>(0);
+
+    //fill with sum of both matrices
+    for(int y = 0; y < colDim; y++)
+        for(int x = 0; x < rowDim; x++)
+        {
+            T operationResult = a.get(x,y) * b;
+            multMatrix.set(x, y, operationResult);
+        }
+
+    //return object
+    return multMatrix;
+}
+
+template<class T, unsigned int rowDim, unsigned int colDim>
+inline void MathMatrix<T, rowDim, colDim>::fillLinear()
+{
+    for(int y = 0; y < colDim; y++)
+        for(int x = 0; x < rowDim; x++)
+            set(x, y, x);
+}

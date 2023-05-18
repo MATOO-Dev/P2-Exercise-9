@@ -35,4 +35,43 @@ int main()
     myMatrix = std::move(ourMatrix);
     std::cout << to_string(myMatrix);
 
+    //assign values to myMatrix and yourMatrix
+    std::cout << "Filling matrices linearly\n";
+    myMatrix.fillLinear();
+    yourMatrix.fillLinear();
+    std::cout << to_string(myMatrix);
+
+    //add myMaxtrix and yourMatrix
+    std::cout << "Adding myMatrix to yourMatrix\n";
+    std::cout << to_string(myMatrix + yourMatrix);
+
+    //multiply myMatrix * x
+    std::cout << "Multiplying matrix with 3\n";
+    std::cout << to_string(myMatrix * 3);
+
+    //multiply myMatrix * vector
+    std::cout << "Creating new matrix and vector\n";
+    MathMatrix<float, 3, 2> multMatrix = MathMatrix<float, 3, 2>(0);
+    multMatrix.set(0, 0, 5);
+    multMatrix.set(1, 0, -1);
+    multMatrix.set(2, 0, 8);
+    multMatrix.set(0, 1, 7);
+    multMatrix.set(1, 1, 0.5f);
+    multMatrix.set(2, 1, 0);
+    std::cout << to_string(multMatrix);
+
+    MathVec<float, 3> multVec = MathVec<float, 3>(0);
+    multVec.set(0, 1);
+    multVec.set(1, 0);
+    multVec.set(2, 4);
+    std::cout << to_string(multVec) << "\n\n";
+
+    std::cout << "Multiplying matrix with vector\n";
+    std::cout << to_string(multMatrix * multVec) << "\n\n";
+
+    //multiply myMatrix * yourMatrix
+    std::cout << "Multiplying myMatrix with yourMatrix\n";
+    //std::cout << to_string(myMatrix * yourMatrix);
+
+    //bonus
 }
