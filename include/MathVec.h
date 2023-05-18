@@ -92,8 +92,8 @@ inline MathVec2<T>::MathVec2(const MathVec<T, 2>& source) : MathVec<T, 2>(source
 
 template<class T>
 inline MathVec2<T>& MathVec2<T>::operator=(const MathVec<T, 2>& source) {
-	data[0] = source.data[0];
-	data[1] = source.data[1];
+	this->data[0] = source.data[0];
+	this->data[1] = source.data[1];
 	return *this;
 }
 
