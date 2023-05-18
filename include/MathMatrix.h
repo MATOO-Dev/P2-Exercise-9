@@ -286,18 +286,28 @@ MathVec<T, colDim> operator*(const MathMatrix<T, rowDim, colDim>& a, const MathV
 }
 
 //placeholder
-template<class T, unsigned int rowDim, unsigned int colDim>
-inline MathMatrix<T, rowDim, colDim> operator*(const MathMatrix<T, rowDim, colDim>& a, const MathMatrix<T, rowDim, colDim>& b)
+template<class T, unsigned int mDim, unsigned int nDim, unsigned int lDim>
+inline MathMatrix<T, lDim, mDim> operator*(const MathMatrix<T, nDim ,mDim>& a, const MathMatrix<T, lDim, nDim>& b)
 {
     //new object
-    MathMatrix<T, rowDim, colDim> multMatrix = MathMatrix<T, rowDim, colDim>(0);
+    MathMatrix<T, lDim, mDim> multMatrix = MathMatrix<T, lDim, mDim>(0);
 
-    //fill with sum of both matrices
-    for(int y = 0; y < colDim; y++)
-        for(int x = 0; x < rowDim; x++)
+    //for each field in the result matrix
+    for(int high = 0; high < mDim; high++)
+        for(int wide = 0; wide < lDim; wide++)
         {
-            T operationResult = a.get(x,y) * b;
-            multMatrix.set(x, y, operationResult);
+            //make a new T
+            T cij = 0;
+
+            //loop over the shared side (n)
+            for(int n = 0; n < nDim; n++)
+                //take value from a/b, multiply it and add to the result
+                //for a, row m is same as loop y, then iterate over a row
+                //for b, column n is same as loop x, then itherate over b column
+                cij += a.get(n, high) * b.get(wide, n);
+
+            //add sum to result matrix
+            multMatrix.set(wide, high, cij);
         }
 
     //return object

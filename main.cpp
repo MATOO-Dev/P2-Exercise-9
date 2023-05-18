@@ -70,8 +70,33 @@ int main()
     std::cout << to_string(multMatrix * multVec) << "\n\n";
 
     //multiply myMatrix * yourMatrix
-    std::cout << "Multiplying myMatrix with yourMatrix\n";
-    //std::cout << to_string(myMatrix * yourMatrix);
+    std::cout << "Creating 2 new matrices";
+    MathMatrix<float, 4, 2> aMatrix = MathMatrix<float, 4, 2>(0);
+    MathMatrix<float, 3, 4> bMatrix = MathMatrix<float, 3, 4>(0);
+    aMatrix.set(0, 0, 1);
+    aMatrix.set(1, 0, 2);
+    aMatrix.set(2, 0, -3);
+    aMatrix.set(3, 0, 1);
+    aMatrix.set(0, 1, 5);
+    aMatrix.set(1, 1, 0);
+    aMatrix.set(2, 1, 6);
+    aMatrix.set(3, 1, 1);
+    bMatrix.set(0, 0, 1);
+    bMatrix.set(1, 0, 8);
+    bMatrix.set(2, 0, -1);
+    bMatrix.set(0, 1, 0);
+    bMatrix.set(1, 1, 0);
+    bMatrix.set(2, 1, 1);
+    bMatrix.set(0, 2, 0.5f);
+    bMatrix.set(1, 2, -1);
+    bMatrix.set(2, 2, -2);
+    bMatrix.set(0, 3, 1);
+    bMatrix.set(1, 3, 0);
+    bMatrix.set(2, 3, 4);
+    std::cout << to_string(aMatrix);
+    std::cout << to_string(bMatrix);
+    std::cout << "Multiplying matrices\n";
+    std::cout << to_string(aMatrix * bMatrix);
 
     //bonus
 }
